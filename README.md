@@ -132,12 +132,78 @@ tests/
 
 # Design Decisions
 
+# Architecture
+
+The project follows **Clean Architecture**.
+
+```
+Presentation (API)
+
+↓
+
+Application
+
+↓
+
+Domain
+
+↓
+
+Infrastructure
+```
+
 ## Why Clean Architecture?
 
--   Better separation of concerns
--   Easier testing
--   Lower coupling
--   Easier maintenance
+Clean Architecture was chosen to separate business logic from infrastructure concerns.
+
+Each layer has a single responsibility:
+
+### API
+
+Responsible for:
+
+- HTTP endpoints
+- Dependency Injection
+- Middleware
+- Swagger configuration
+
+### Application
+
+Contains all business rules.
+
+Responsibilities:
+
+- Import sensor readings
+- Aggregate sensor data
+- Validation
+- Interfaces
+- DTOs
+
+The Application layer does not depend on EF Core or SQL Server.
+
+### Domain
+
+Contains the core business model.
+
+Responsibilities:
+
+- Entities
+- Value Objects
+
+The Domain layer has no dependency on any external library.
+
+### Infrastructure
+
+Responsible for implementation details.
+
+Examples:
+
+- EF Core
+- SQL Server
+- Repository
+- File Reader
+
+This layer depends on the Application layer but not vice versa.
 
 ## Why Repository Pattern?
 
@@ -368,21 +434,152 @@ Global exception middleware returns consistent HTTP responses.
 
 # Unit Tests
 
-Implemented unit tests:
+The project includes unit tests for the application's core business logic.
 
-  Service              Scenario
-  -------------------- -------------------------
-  ReadingImporter      Valid reading import
-  ReadingImporter      Duplicate detection
-  ReadingImporter      Invalid JSON
-  AggregationService   Aggregation calculation
-  AggregationService   Empty bucket
+The tests are focused on validating the behavior of the service layer rather than framework-specific components such as controllers, middleware, or Entity Framework.
 
-Run tests:
+The following scenarios are covered:
 
-``` bash
-dotnet test
-```
+---
+
+## ReadingImporter
+
+### 1. ImportAsync_Should_Store_Valid_Reading
+
+**Purpose**
+
+Verifies that a valid sensor reading is successfully imported and stored.
+
+**Scenario**
+
+- A valid JSON line is provided.
+- The reading passes all business validation rules.
+- The reading does not already exist in the database.
+
+**Expected Result**
+
+- The reading is added to the repository.
+- SaveChangesAsync is called exactly once.
+- ImportReport reports:
+  - StoredReadings = 1
+  - DuplicateReadings = 0
+  - InvalidReadings = 0
+
+---
+
+### 2. ImportAsync_Should_Skip_Duplicate_Reading
+
+**Purpose**
+
+Verifies that duplicate readings are detected and skipped.
+
+**Scenario**
+
+- The imported reading already exists in the database.
+- The duplicate is identified using:
+  - DeviceId
+  - Metric
+  - Timestamp
+  - Sequence
+
+**Expected Result**
+
+- The reading is not stored.
+- AddRangeAsync is never called.
+- SaveChangesAsync is never called.
+- ImportReport reports:
+  - StoredReadings = 0
+  - DuplicateReadings = 1
+  - InvalidReadings = 0
+
+---
+
+### 3. ImportAsync_Should_Count_Invalid_Json
+
+**Purpose**
+
+Verifies that malformed JSON records do not interrupt the import process.
+
+**Scenario**
+
+- The input contains an invalid JSON document.
+- JSON deserialization throws a JsonException.
+
+**Expected Result**
+
+- The invalid record is skipped.
+- The import process continues.
+- No data is stored.
+- ImportReport reports:
+  - StoredReadings = 0
+  - DuplicateReadings = 0
+  - InvalidReadings = 1
+
+---
+
+## AggregationService
+
+### 4. AggregateAsync_Should_Return_Correct_Aggregation
+
+**Purpose**
+
+Verifies that sensor readings are correctly aggregated into time buckets.
+
+**Scenario**
+
+A bucket contains multiple readings.
+
+The service calculates:
+
+- Count
+- Average
+- Minimum
+- Maximum
+
+**Expected Result**
+
+The returned aggregation contains the correct statistical values for the bucket.
+
+---
+
+### 5. AggregateAsync_Should_Return_Empty_Bucket_When_No_Readings_Exist
+
+**Purpose**
+
+Verifies that empty time buckets are still returned even when no readings exist.
+
+**Scenario**
+
+- No readings are returned from the repository.
+- The requested time range still contains one or more buckets.
+
+**Expected Result**
+
+Each bucket is returned with:
+
+- Count = 0
+- Average = null
+- Minimum = null
+- Maximum = null
+
+This ensures that consumers always receive a continuous timeline, even when there is no sensor data available.
+
+---
+
+# Test Strategy
+
+The testing strategy focuses on validating business behavior rather than implementation details.
+
+The following principles were followed:
+
+- External dependencies are mocked using **Moq**.
+- Assertions are written using **FluentAssertions**.
+- Each test follows the **Arrange – Act – Assert (AAA)** pattern.
+- Repository interactions are verified using `Verify()`.
+- Only the service layer is unit tested, since it contains the application's business logic.
+- Controllers, middleware, and Entity Framework Core are intentionally excluded from unit testing because they primarily delegate work or rely on framework functionality.
+
+This approach keeps the tests isolated, deterministic, fast, and easy to maintain.
 
 ------------------------------------------------------------------------
 
