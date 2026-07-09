@@ -26,9 +26,7 @@
 16. Logging
 17. Error Handling
 18. Unit Tests
-19. Performance Considerations
 20. Trade-offs
-21. Future Improvements
 23. Author
 
 ------------------------------------------------------------------------
@@ -388,21 +386,6 @@ dotnet test
 
 ------------------------------------------------------------------------
 
-# Performance Considerations
-
-Current implementation prioritizes readability.
-
-Possible future optimizations:
-
--   SQL-side aggregation
--   Bulk insert
--   Streaming import
--   Background processing
--   Parallel processing
--   Caching
-
-------------------------------------------------------------------------
-
 # Trade-offs
 
 For this coding exercise:
@@ -410,14 +393,6 @@ For this coding exercise:
 -   Simplicity over premature optimization
 -   In-memory aggregation after loading filtered records
 -   HashSet chosen to reduce duplicate lookup cost
-
-------------------------------------------------------------------------
-
-# Future Improvements
-
--   Integration Tests
--   File Upload API
-
 
 ------------------------------------------------------------------------
 
