@@ -1,0 +1,6 @@
+@SensorReadingService_HostAddress = http://localhost:5090
+
+GET {{SensorReadingService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

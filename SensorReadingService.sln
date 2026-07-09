@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36202.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorReadingService", "SensorReadingService\SensorReadingService.csproj", "{88CE4C3C-0F3C-4D36-83B6-69560F8EE9C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorReadingService.Application", "SensorReadingService.Application\SensorReadingService.Application.csproj", "{D710F926-3214-4DEE-B229-116DB78B2FF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorReadingService.Domain", "SensorReadingService.Domain\SensorReadingService.Domain.csproj", "{F102D847-D629-4548-BB7E-481646120A87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorReadingService.Infrastructure", "SensorReadingService.Infrastructure\SensorReadingService.Infrastructure.csproj", "{15D86206-777B-4A34-8ED4-F847CC317EEE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88CE4C3C-0F3C-4D36-83B6-69560F8EE9C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88CE4C3C-0F3C-4D36-83B6-69560F8EE9C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88CE4C3C-0F3C-4D36-83B6-69560F8EE9C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88CE4C3C-0F3C-4D36-83B6-69560F8EE9C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D710F926-3214-4DEE-B229-116DB78B2FF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D710F926-3214-4DEE-B229-116DB78B2FF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D710F926-3214-4DEE-B229-116DB78B2FF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D710F926-3214-4DEE-B229-116DB78B2FF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F102D847-D629-4548-BB7E-481646120A87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F102D847-D629-4548-BB7E-481646120A87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F102D847-D629-4548-BB7E-481646120A87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F102D847-D629-4548-BB7E-481646120A87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15D86206-777B-4A34-8ED4-F847CC317EEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15D86206-777B-4A34-8ED4-F847CC317EEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15D86206-777B-4A34-8ED4-F847CC317EEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15D86206-777B-4A34-8ED4-F847CC317EEE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {44334E6A-BF46-4407-9E51-A8CE20427DBB}
+	EndGlobalSection
+EndGlobal
