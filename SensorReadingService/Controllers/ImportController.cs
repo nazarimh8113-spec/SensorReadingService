@@ -34,6 +34,7 @@ namespace SensorReadingService.Controllers
             var report = await _importer.ImportAsync(filePath);
 
             return Ok(report);
+
         }
     }
 }
