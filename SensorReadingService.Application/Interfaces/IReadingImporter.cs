@@ -9,6 +9,8 @@ namespace SensorReadingService.Application.Interfaces
 {
     public interface IReadingImporter
     {
-        Task<ImportReport> ImportAsync(string filePath);
+        Task<ImportReport> ImportAsync(
+    string filePath,
+    CancellationToken cancellationToken = default);
     }
 }

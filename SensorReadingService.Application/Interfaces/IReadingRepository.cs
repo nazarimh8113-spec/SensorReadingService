@@ -10,15 +10,21 @@ namespace SensorReadingService.Application.Interfaces
 {
     public interface IReadingRepository
     {
-        Task<HashSet<ReadingIdentity>> GetExistingIdentitiesAsync();
+        Task<HashSet<ReadingIdentity>> GetExistingIdentitiesAsync(
+     CancellationToken cancellationToken = default);
 
-        Task AddRangeAsync(IEnumerable<Reading> readings);
+        Task AddRangeAsync(
+     IEnumerable<Reading> readings,
+     CancellationToken cancellationToken = default);
+
         Task<List<Reading>> GetReadingsAsync(
-    string deviceId,
-    string metric,
-    DateTime from,
-    DateTime to);
+      string deviceId,
+      string metric,
+      DateTime from,
+      DateTime to,
+      CancellationToken cancellationToken = default);
 
-        Task SaveChangesAsync();
+        Task SaveChangesAsync(
+     CancellationToken cancellationToken = default);
     }
 }

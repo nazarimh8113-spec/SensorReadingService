@@ -20,42 +20,50 @@ namespace SensorReadingService.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<HashSet<ReadingIdentity>> GetExistingIdentitiesAsync()
+        public async Task<HashSet<ReadingIdentity>> GetExistingIdentitiesAsync(
+     CancellationToken cancellationToken = default)
         {
             var identities = await _context.Readings
-       .Select(x => new ReadingIdentity(
-           x.DeviceId,
-           x.Metric,
-           x.Timestamp,
-           x.Sequence))
-       .ToListAsync();
+                .AsNoTracking()
+                .Select(x => new ReadingIdentity(
+                    x.DeviceId,
+                    x.Metric,
+                    x.Timestamp,
+                    x.Sequence))
+                .ToListAsync(cancellationToken);
 
             return identities.ToHashSet();
         }
 
-        public async Task AddRangeAsync(IEnumerable<Reading> readings)
+        public async Task AddRangeAsync(
+      IEnumerable<Reading> readings,
+      CancellationToken cancellationToken = default)
         {
-            await _context.Readings.AddRangeAsync(readings);
+            await _context.Readings.AddRangeAsync(readings, cancellationToken);
         }
 
         public async Task<List<Reading>> GetReadingsAsync(
     string deviceId,
     string metric,
     DateTime from,
-    DateTime to)
+    DateTime to,
+    CancellationToken cancellationToken = default)
         {
             return await _context.Readings
+                .AsNoTracking()
                 .Where(x =>
                     x.DeviceId == deviceId &&
                     x.Metric == metric &&
                     x.Timestamp >= from &&
                     x.Timestamp <= to)
                 .OrderBy(x => x.Timestamp)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
-        public async Task SaveChangesAsync()
+
+        public async Task SaveChangesAsync(
+      CancellationToken cancellationToken = default)
         {
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

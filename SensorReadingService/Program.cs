@@ -3,6 +3,7 @@ using SensorReadingService.Application;
 using SensorReadingService.Configuration;
 using SensorReadingService.Infrastructure;
 using SensorReadingService.Infrastructure.Persistence;
+using SensorReadingService.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
